@@ -1,0 +1,37 @@
+.stage{
+    -fx-background-color: #1a1a1a;
+}
+.operationDisplay{
+    -fx-text-fill: #cccccc;
+}
+.resultDisplay{
+    -fx-text-fill: #cccccc;
+    -fx-font-weight: bold;
+}
+.numButtons{
+    -fx-pref-width: 65px;
+    -fx-pref-height: 40px;
+    -fx-background-color: #333333;
+    -fx-text-fill: #cccccc;
+}
+.numButtons:hover{
+    -fx-background-color: #262626;
+}
+.operationButtons{
+    -fx-pref-width: 65px;
+    -fx-pref-height: 40px;
+    -fx-background-color: #262626;
+    -fx-text-fill: #cccccc;
+}
+.operationButtons:hover{
+    -fx-background-color: #333333;
+}
+.eqButton{
+    -fx-pref-width: 65px;
+    -fx-pref-height: 40px;
+    -fx-background-color: #8a0f8a;
+    -fx-text-fill: #cccccc;
+}
+.eqButton:hover{
+    -fx-background-color: #b814b8;
+}
