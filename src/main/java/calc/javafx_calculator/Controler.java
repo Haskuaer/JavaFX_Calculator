@@ -1,25 +1,49 @@
 package calc.javafx_calculator;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import static java.lang.Double.parseDouble;
 
 public class Controler {
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+    private Stage stage;
+
     private boolean aSet = false, bSet = false, comaSet = false;
     private double a, b;
     private String display = "", operator = "";
+
+    @FXML
+    private AnchorPane rootPane;
     @FXML
     private Button  zeroBtn, oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, addBtn, subBtn, multiplyBtn,
-            divBtn, percentBtn, fractionBtn, powerBtn, squareBtn, signBtn, comaBtn, ceBtn, cBtn, backspaceBtn, eqBtn;
+            divBtn, percentBtn, fractionBtn, powerBtn, squareBtn, signBtn, comaBtn, ceBtn, cBtn, backspaceBtn, eqBtn, minimizeBtn, closeBtn;
     @FXML
     private Button[] numBtns = new Button[10];
     @FXML
     private Label operationDisplay, resultDisplay;
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     public void initialize(){
+
+        rootPane.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        rootPane.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
 
         initBtns();
 
@@ -129,18 +153,51 @@ public class Controler {
             display = "";
         });
 
+        percentBtn.setOnAction(event -> {
+            if(aSet) {
+                if (operator.equals("-") || operator.equals("+")) {
+                    b = parseDouble(resultDisplay.getText());
+                    b = a * (b/100);
+                    bSet = true;
+                    display = a + " " + operator + " " + b;
+                    operationDisplay.setText(display);
+                } else if (operator.equals("*") || operator.equals("/")) {
+                    b = parseDouble(resultDisplay.getText());
+                    b = b/100;
+                    bSet = true;
+                    display = a + " " + operator + " " + b;
+                    operationDisplay.setText(display);
+                } else {
+                    resultDisplay.setText("0");
+                    display = "";
+                }
+            } else {
+                resultDisplay.setText("0");
+                display = "";
+            }
+        });
+
         eqBtn.setOnAction(event -> {
             if(!operator.isEmpty()){
-                b = parseDouble(resultDisplay.getText());
-                bSet = true;
-                display = (trimDouble(String.valueOf(a)) + " " + operator + " " + trimDouble(String.valueOf(b)) + " = ");
-                operationDisplay.setText(display);
-                display = String.valueOf(getResult(a, b, operator));
-                display = trimDouble(display);
-                resultDisplay.setText(display);
-                comaSet = false;
-                operator = "";
-                display = "";
+                if(bSet){
+                    display = String.valueOf(getResult(a, b, operator));
+                    display = trimDouble(display);
+                    resultDisplay.setText(display);
+                    comaSet = false;
+                    operator = "";
+                    display = "";
+                } else {
+                    b = parseDouble(resultDisplay.getText());
+                    bSet = true;
+                    display = (trimDouble(String.valueOf(a)) + " " + operator + " " + trimDouble(String.valueOf(b)) + " = ");
+                    operationDisplay.setText(display);
+                    display = String.valueOf(getResult(a, b, operator));
+                    display = trimDouble(display);
+                    resultDisplay.setText(display);
+                    comaSet = false;
+                    operator = "";
+                    display = "";
+                }
             } else {
                 a = parseDouble(resultDisplay.getText());
                 display = String.valueOf(a);
@@ -188,6 +245,14 @@ public class Controler {
             aSet = false;
             bSet = false;
             comaSet = false;
+        });
+
+        minimizeBtn.setOnAction(event -> {
+            stage.setIconified(true);
+        });
+
+        closeBtn.setOnAction(event -> {
+            Platform.exit();
         });
     }
 
