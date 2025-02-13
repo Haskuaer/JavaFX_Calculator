@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>calc</groupId>
-    <artifactId>JavaFX_Calculator</artifactId>
+    <artifactId>Calculator</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>JavaFX_Calculator</name>
 
